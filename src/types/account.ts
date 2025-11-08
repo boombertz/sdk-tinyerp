@@ -1,33 +1,75 @@
 /**
- * Interface que representa os dados da conta.
- * Baseado na estrutura `retorno.conta` da API v2.
+ * Detalhes completos da conta TinyERP.
+ *
+ * Contém as informações cadastrais da empresa/conta no TinyERP,
+ * incluindo dados fiscais, endereço e contato.
+ *
+ * @example
+ * ```typescript
+ * const account = await sdk.account.getInfo();
+ * console.log(`Empresa: ${account.razao_social}`);
+ * console.log(`CNPJ: ${account.cnpj_cpf}`);
+ * ```
  */
 export interface AccountDetails {
+  /** Razão social da empresa */
   razao_social: string;
+
+  /** CNPJ (14 dígitos) ou CPF (11 dígitos) */
   cnpj_cpf: string;
+
+  /** Nome fantasia da empresa */
   fantasia: string;
+
+  /** Logradouro do endereço */
   endereco: string;
+
+  /** Número do endereço */
   numero: string;
+
+  /** Bairro */
   bairro: string;
+
+  /** Complemento do endereço */
   complemento: string;
+
+  /** Nome da cidade */
   cidade: string;
+
+  /** Sigla do estado (UF) */
   estado: string;
+
+  /** CEP no formato 12345-678 */
   cep: string;
+
+  /** Telefone de contato */
   fone: string;
+
+  /** E-mail principal da empresa */
   email: string;
+
+  /** Inscrição Estadual */
   inscricao_estadual: string;
+
+  /** Regime tributário da empresa (ex: Simples Nacional, Lucro Presumido, etc.) */
   regime_tributario: string;
 }
 
 /**
- * Representa a resposta de SUCESSO completa do endpoint /api2/info.php.
- * O nosso HttpClient irá retornar esta estrutura.
+ * Resposta de sucesso da API ao obter informações da conta.
+ *
+ * Esta interface representa a estrutura retornada pela API do TinyERP
+ * no endpoint /info.php quando a requisição é bem-sucedida.
+ *
+ * @internal Esta interface é usada internamente pelo SDK
  */
 export interface InfoSuccessResponse {
-  /** Conforme tabela "Status de Processamento" */
+  /** Status de processamento da API (conforme documentação do TinyERP) */
   status_processamento: number;
-  /** Contém o status do retorno “OK” */
+
+  /** Status da resposta: sempre "OK" em caso de sucesso */
   status: "OK";
-  /** Elemento utilizado para representar a conta. */
+
+  /** Objeto contendo os detalhes da conta */
   conta: AccountDetails;
 }
