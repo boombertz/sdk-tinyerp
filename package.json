@@ -1,0 +1,35 @@
+{
+  "name": "sdk-tinyerp",
+  "version": "1.0.0",
+  "description": "SDK não oficial para a API do TinyERP (Olist)",
+  "author": "Hebert Marchesi <hello@bertz.co>",
+  "license": "ISC",
+  "keywords": [
+    "sdk",
+    "tinyERP",
+    "olist"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.8"
+  }
+}
