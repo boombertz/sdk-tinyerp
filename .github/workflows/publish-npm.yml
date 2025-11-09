@@ -1,8 +1,11 @@
 name: 🚀 Publicar no npm
-
 on:
   release:
     types: [created]
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   publish:
@@ -18,6 +21,8 @@ jobs:
           node-version: 20
           registry-url: "https://registry.npmjs.org/"
 
+      - name: Update npm
+        run: npm install -g npm@latest
       - name: Instalar dependências
         run: npm ci
 
@@ -29,5 +34,3 @@ jobs:
 
       - name: Publicar no npm
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
