@@ -1,12 +1,17 @@
 {
   "name": "sdk-tinyerp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "SDK não oficial para a API do TinyERP (Olist)",
-  "repository": {
-    "url": "https://github.com/boombertz/sdk-tinyerp"
-  },
   "author": "Hebert Marchesi <hello@bertz.co>",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boombertz/sdk-tinyerp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/boombertz/sdk-tinyerp/issues"
+  },
+  "homepage": "https://github.com/boombertz/sdk-tinyerp#readme",
   "keywords": [
     "sdk",
     "tinyERP",
