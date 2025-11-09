@@ -1,6 +1,6 @@
 {
   "name": "sdk-tinyerp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SDK não oficial para a API do TinyERP (Olist)",
   "author": "Hebert Marchesi <hello@bertz.co>",
   "license": "ISC",
