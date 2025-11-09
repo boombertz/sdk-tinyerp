@@ -1,0 +1,33 @@
+name: 🚀 Publicar no npm
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org/"
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar os testes
+        run: npm test
+
+      - name: Compilar o projeto (Build)
+        run: npm run build
+
+      - name: Publicar no npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
