@@ -268,4 +268,4 @@ if (!product) {
 
 - [Aprender sobre paginação](/guides/pagination)
 - [Ver operações em lote](/guides/batch-operations)
-- [Consultar API Reference](/api/)
+- [Consultar API Reference](/api/index)

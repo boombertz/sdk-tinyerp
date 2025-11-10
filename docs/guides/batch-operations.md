@@ -400,4 +400,4 @@ async function createWithProgress(items: any[]) {
 
 - [Ver tratamento de erros](/guides/error-handling)
 - [Aprender sobre paginação](/guides/pagination)
-- [Consultar API Reference](/api/)
+- [Consultar API Reference](/api/index)

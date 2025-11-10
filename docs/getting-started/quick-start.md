@@ -487,4 +487,4 @@ Agora que você viu exemplos práticos:
 - [Explore a documentação de cada Resource](/resources/account)
 - [Aprenda sobre paginação](/guides/pagination)
 - [Entenda operações em lote](/guides/batch-operations)
-- [Consulte a API Reference completa](/api/)
+- [Consulte a API Reference completa](/api/index)

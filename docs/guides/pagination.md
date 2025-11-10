@@ -309,4 +309,4 @@ await exportAllProductsToCSV('produtos.csv');
 
 - [Aprender sobre operações em lote](/guides/batch-operations)
 - [Ver tratamento de erros](/guides/error-handling)
-- [Consultar API Reference](/api/)
+- [Consultar API Reference](/api/index)
