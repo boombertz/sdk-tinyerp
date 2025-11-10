@@ -287,4 +287,4 @@ while (hasMore) {
 
 - [Ver guia de operações em lote](/guides/batch-operations)
 - [Aprender sobre paginação](/guides/pagination)
-- [Consultar API Reference completa](/api/index)
+- [Consultar API Reference completa](/api/)

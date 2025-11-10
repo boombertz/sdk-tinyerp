@@ -16,7 +16,7 @@ hero:
       link: https://github.com/seu-usuario/sdk-tinyerp
     - theme: alt
       text: API Reference
-      link: /api/index
+      link: /api/
 
 features:
   - icon: 📘
@@ -158,7 +158,7 @@ O SDK TinyERP foi desenvolvido pensando na experiência do desenvolvedor:
 - [Aprender sobre autenticação](/getting-started/authentication)
 - [Ver exemplos práticos](/getting-started/quick-start)
 - [Explorar Resources disponíveis](/resources/account)
-- [Consultar API Reference completa](/api/index)
+- [Consultar API Reference completa](/api/)
 
 </div>
 

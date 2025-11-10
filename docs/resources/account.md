@@ -121,4 +121,4 @@ try {
 
 - [Ver documentação do Contacts Resource](/resources/contacts)
 - [Ver documentação do Products Resource](/resources/products)
-- [Consultar API Reference completa](/api/index)
+- [Consultar API Reference completa](/api/)

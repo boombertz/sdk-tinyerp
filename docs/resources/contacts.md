@@ -238,4 +238,4 @@ erros.forEach(erro => {
 
 - [Ver documentação do Products Resource](/resources/products)
 - [Aprender sobre operações em lote](/guides/batch-operations)
-- [Consultar API Reference](/api/index)
+- [Consultar API Reference](/api/)
