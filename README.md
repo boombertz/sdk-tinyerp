@@ -12,6 +12,7 @@ SDK não oficial para a API do TinyERP (Olist), desenvolvido em TypeScript com s
 - ✅ **Recursos implementados**:
   - Account (Conta)
   - Contacts (Contatos) - busca, obtenção, criação e atualização
+  - Products (Produtos) - busca, obtenção e criação
 
 ## Instalação
 
@@ -159,6 +160,218 @@ const updatedContacts = await sdk.contact.update([
 console.log('Status da atualização:', updatedContacts[0].status);
 ```
 
+### Products (Produtos)
+
+#### Pesquisar produtos
+
+```typescript
+// Busca simples por termo
+const result = await sdk.product.search('notebook');
+console.log(`Encontrados ${result.produtos.length} produtos`);
+console.log(`Página ${result.pagina} de ${result.numero_paginas}`);
+
+result.produtos.forEach(product => {
+  console.log(`${product.nome} - R$ ${product.preco}`);
+  console.log(`  Código: ${product.codigo}`);
+  console.log(`  Estoque: ${product.estoque_atual}`);
+});
+
+// Busca com filtros avançados
+const filteredResult = await sdk.product.search('mouse', {
+  situacao: 'A',        // A = Ativo, I = Inativo, E = Excluído
+  pagina: 2,
+  idListaPreco: 123,    // Filtrar por lista de preços
+  idTag: 456            // Filtrar por tag
+});
+
+// Busca por GTIN/EAN
+const productByGtin = await sdk.product.search('', {
+  gtin: '7891234567890'
+});
+```
+
+#### Obter detalhes de um produto
+
+```typescript
+const productId = 12345;
+const product = await sdk.product.getById(productId);
+
+console.log('Nome:', product.nome);
+console.log('Preço:', product.preco);
+console.log('Código/SKU:', product.codigo);
+console.log('GTIN/EAN:', product.gtin);
+console.log('NCM:', product.ncm);
+console.log('Estoque atual:', product.estoque_atual);
+console.log('Estoque mínimo:', product.estoque_minimo);
+
+// Acessar variações de produtos
+if (product.variacoes && product.variacoes.length > 0) {
+  console.log('\nVariações disponíveis:');
+  product.variacoes.forEach(variacao => {
+    console.log(`  Código: ${variacao.codigo}`);
+    console.log(`  Preço: R$ ${variacao.preco}`);
+    console.log(`  Grade:`, variacao.grade); // Ex: { "Cor": "Azul", "Tamanho": "M" }
+    console.log(`  Estoque: ${variacao.estoque_atual}`);
+  });
+}
+
+// Acessar itens de um kit
+if (product.classe_produto === 'K' && product.kit && product.kit.length > 0) {
+  console.log('\nItens do kit:');
+  product.kit.forEach(item => {
+    console.log(`  Produto ID ${item.id_produto}: ${item.quantidade} unidade(s)`);
+  });
+}
+
+// Dados de SEO e e-commerce
+console.log('\nSEO:');
+console.log('Title:', product.seo_title);
+console.log('Description:', product.seo_description);
+console.log('Slug:', product.slug);
+
+if (product.mapeamentos && product.mapeamentos.length > 0) {
+  console.log('\nMapeamentos de e-commerce:');
+  product.mapeamentos.forEach(m => {
+    console.log(`  Plataforma ${m.idEcommerce}: ${m.skuMapeamento}`);
+  });
+}
+```
+
+#### Criar produtos
+
+```typescript
+// Criar um produto simples
+const simpleProduct = await sdk.product.create([
+  {
+    sequencia: 1,
+    data: {
+      nome: 'Notebook Dell Inspiron 15',
+      unidade: 'UN',
+      preco: 3500.00,
+      origem: '0',
+      situacao: 'A',
+      tipo: 'P',
+      codigo: 'DELL-INS15',
+      gtin: '7891234567890',
+      ncm: '84713012',
+      peso_bruto: 2.5,
+      peso_liquido: 2.3
+    }
+  }
+]);
+
+if (simpleProduct[0].status === 'OK') {
+  console.log('Produto criado com ID:', simpleProduct[0].id);
+} else {
+  console.error('Erro:', simpleProduct[0].erros);
+}
+
+// Criar produto com variações
+const productWithVariations = await sdk.product.create([
+  {
+    sequencia: 1,
+    data: {
+      nome: 'Camiseta Básica',
+      unidade: 'UN',
+      preco: 49.90,
+      origem: '0',
+      situacao: 'A',
+      tipo: 'P',
+      classe_produto: 'V', // V = Produto com variações
+      variacoes: [
+        {
+          codigo: 'CAM-AZUL-P',
+          preco: 49.90,
+          grade: { 'Cor': 'Azul', 'Tamanho': 'P' },
+          estoque_atual: 10
+        },
+        {
+          codigo: 'CAM-AZUL-M',
+          preco: 49.90,
+          grade: { 'Cor': 'Azul', 'Tamanho': 'M' },
+          estoque_atual: 15
+        },
+        {
+          codigo: 'CAM-VERM-P',
+          preco: 49.90,
+          grade: { 'Cor': 'Vermelho', 'Tamanho': 'P' },
+          estoque_atual: 8
+        }
+      ]
+    }
+  }
+]);
+
+// Criar um kit de produtos
+const kitProduct = await sdk.product.create([
+  {
+    sequencia: 1,
+    data: {
+      nome: 'Kit Escritório Completo',
+      unidade: 'UN',
+      preco: 4500.00,
+      origem: '0',
+      situacao: 'A',
+      tipo: 'P',
+      classe_produto: 'K', // K = Kit
+      kit: [
+        { id_produto: 12345, quantidade: 1 },  // Notebook
+        { id_produto: 12346, quantidade: 1 },  // Mouse
+        { id_produto: 12347, quantidade: 1 }   // Teclado
+      ]
+    }
+  }
+]);
+
+// Criar múltiplos produtos em lote
+const batchProducts = await sdk.product.create([
+  {
+    sequencia: 1,
+    data: {
+      nome: 'Produto 1',
+      unidade: 'UN',
+      preco: 100.00,
+      origem: '0',
+      situacao: 'A',
+      tipo: 'P'
+    }
+  },
+  {
+    sequencia: 2,
+    data: {
+      nome: 'Produto 2',
+      unidade: 'UN',
+      preco: 200.00,
+      origem: '0',
+      situacao: 'A',
+      tipo: 'P'
+    }
+  },
+  {
+    sequencia: 3,
+    data: {
+      nome: 'Serviço de Consultoria',
+      unidade: 'HR',
+      preco: 150.00,
+      origem: '0',
+      situacao: 'A',
+      tipo: 'S' // S = Serviço
+    }
+  }
+]);
+
+// Processar resultados do lote
+const sucessos = batchProducts.filter(r => r.status === 'OK');
+const erros = batchProducts.filter(r => r.status === 'Erro');
+
+console.log(`${sucessos.length} produtos criados com sucesso`);
+console.log(`${erros.length} produtos com erro`);
+
+erros.forEach(erro => {
+  console.error(`Sequência ${erro.sequencia}:`, erro.erros);
+});
+```
+
 ## Tratamento de Erros
 
 O SDK usa uma classe de erro customizada `TinyApiError` que preserva os detalhes do erro retornado pela API:
@@ -195,10 +408,13 @@ sdk-tinyerp/
 │   │   ├── account.ts           # Resource de Account (conta)
 │   │   ├── account.test.ts      # Testes do Account
 │   │   ├── contacts.ts          # Resource de Contacts (contatos)
-│   │   └── contacts.test.ts     # Testes dos Contacts
+│   │   ├── contacts.test.ts     # Testes dos Contacts
+│   │   ├── products.ts          # Resource de Products (produtos)
+│   │   └── products.test.ts     # Testes dos Products
 │   └── types/
 │       ├── account.ts           # Tipos TypeScript para Account
-│       └── contacts.ts          # Tipos TypeScript para Contacts
+│       ├── contacts.ts          # Tipos TypeScript para Contacts
+│       └── products.ts          # Tipos TypeScript para Products
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -255,17 +471,25 @@ Este SDK implementa a API v2 do TinyERP. Documentação oficial: https://api.tin
 
 ### Endpoints implementados
 
+**Account**
 - `POST /info.php` - Obter informações da conta
+
+**Contacts**
 - `POST /contatos.pesquisa.php` - Pesquisar contatos
 - `POST /contato.obter.php` - Obter detalhes de um contato
 - `POST /contato.incluir.php` - Criar contatos
 - `POST /contato.alterar.php` - Atualizar contatos
 
+**Products**
+- `POST /produtos.pesquisa.php` - Pesquisar produtos
+- `POST /produto.obter.php` - Obter detalhes de um produto
+- `POST /produto.incluir.php` - Criar produtos
+
 ## Roadmap
 
 Recursos planejados para futuras versões:
 
-- [ ] Produtos
+- [x] Produtos
 - [ ] Pedidos
 - [ ] Notas Fiscais
 - [ ] Estoque
