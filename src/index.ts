@@ -3,6 +3,7 @@ import { TinyApiError } from "./errors/tiny-api-error.js";
 
 import { AccountResource } from "./resources/account.js";
 import { ContactsResource } from "./resources/contacts.js";
+import { ProductsResource } from "./resources/products.js";
 
 import type { AccountDetails } from "./types/account.ts";
 
@@ -80,6 +81,8 @@ export class TinySDK {
    */
   public readonly contact: ContactsResource;
 
+  public readonly product: ProductsResource;
+
   /**
    * Cria uma nova instância do SDK TinyERP.
    *
@@ -100,6 +103,7 @@ export class TinySDK {
 
     this.account = new AccountResource(this.httpClient);
     this.contact = new ContactsResource(this.httpClient);
+    this.product = new ProductsResource(this.httpClient);
   }
 }
 
