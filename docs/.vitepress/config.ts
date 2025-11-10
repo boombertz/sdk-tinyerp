@@ -2,6 +2,7 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   ignoreDeadLinks: true,
+  base: "/sdk-tinyerp/",
   title: "SDK TinyERP",
   description: "SDK não oficial em TypeScript para a API v2 do TinyERP (Olist)",
 
