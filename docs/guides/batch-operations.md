@@ -1,7 +1,7 @@
 # Operações em Lote (Batch)
 
 O SDK TinyERP suporta operações em lote para criar e atualizar múltiplos registros de uma vez. Como as requisições são feitas enviando os dados via params, existe um tamanho de dados para serem enviados.
-**[O limite de requisições vai depender da sua conta no Tiny. ](https://tiny.com.br/api-docs/api2-limites-api)**
+**[O limite de requisições vai depender da sua conta no Tiny.](https://tiny.com.br/api-docs/api2-limites-api)**
 
 ## Por Que Usar Batch?
 
