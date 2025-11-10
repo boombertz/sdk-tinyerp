@@ -1,0 +1,28 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "out": "docs/api",
+  "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-missing-exports"],
+  "readme": "none",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "excludeExternals": true,
+  "categorizeByGroup": true,
+  "categoryOrder": ["Resources", "Types", "Errors", "Core", "*"],
+  "groupOrder": ["Resources", "Types", "Errors", "*"],
+  "sort": ["source-order"],
+  "kindSortOrder": ["Class", "Interface", "TypeAlias", "Function", "Variable"],
+  "commentStyle": "jsdoc",
+  "name": "SDK TinyERP - API Reference",
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
+  "treatWarningsAsErrors": false,
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": false
+  }
+}

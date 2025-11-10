@@ -1,6 +1,13 @@
 # SDK TinyERP (Unofficial)
 
+[![npm version](https://img.shields.io/npm/v/sdk-tinyerp.svg)](https://www.npmjs.com/package/sdk-tinyerp)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![Documentation](https://img.shields.io/badge/docs-VitePress-brightgreen.svg)](https://boombertz.github.io/sdk-tinyerp/)
+[![License](https://img.shields.io/npm/l/sdk-tinyerp.svg)](LICENSE)
+
 SDK não oficial para a API do TinyERP (Olist), desenvolvido em TypeScript com suporte completo a tipos.
+
+**📚 [Documentação Completa](https://boombertz.github.io/sdk-tinyerp/)**
 
 ## Características
 

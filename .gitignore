@@ -14,3 +14,10 @@ Thumbs.db
 *.env
 .vscode/
 .idea/
+
+# VitePress
+docs/.vitepress/cache
+docs/.vitepress/dist
+
+# TypeDoc
+docs/api
