@@ -1,6 +1,7 @@
 # Operações em Lote (Batch)
 
-O SDK TinyERP suporta operações em lote para criar e atualizar múltiplos registros de uma vez.
+O SDK TinyERP suporta operações em lote para criar e atualizar múltiplos registros de uma vez. Como as requisições são feitas enviando os dados via params, existe um tamanho de dados para serem enviados.
+**[O limite de requisições vai depender da sua conta no Tiny. ](https://tiny.com.br/api-docs/api2-limites-api)**
 
 ## Por Que Usar Batch?
 
@@ -16,35 +17,35 @@ const contacts = await sdk.contact.create([
   {
     sequencia: 1,
     contato: {
-      nome: 'João Silva',
-      tipo_pessoa: 'F',
-      cpf_cnpj: '11111111111',
-      email: 'joao@email.com'
-    }
+      nome: "João Silva",
+      tipo_pessoa: "F",
+      cpf_cnpj: "11111111111",
+      email: "joao@email.com",
+    },
   },
   {
     sequencia: 2,
     contato: {
-      nome: 'Maria Santos',
-      tipo_pessoa: 'F',
-      cpf_cnpj: '22222222222',
-      email: 'maria@email.com'
-    }
+      nome: "Maria Santos",
+      tipo_pessoa: "F",
+      cpf_cnpj: "22222222222",
+      email: "maria@email.com",
+    },
   },
   {
     sequencia: 3,
     contato: {
-      nome: 'Empresa XYZ LTDA',
-      tipo_pessoa: 'J',
-      cpf_cnpj: '12345678000199',
-      email: 'contato@xyz.com'
-    }
-  }
+      nome: "Empresa XYZ LTDA",
+      tipo_pessoa: "J",
+      cpf_cnpj: "12345678000199",
+      email: "contato@xyz.com",
+    },
+  },
 ]);
 
 // Processar resultados
-const sucessos = contacts.filter(r => r.status === 'OK');
-const erros = contacts.filter(r => r.status === 'Erro');
+const sucessos = contacts.filter((r) => r.status === "OK");
+const erros = contacts.filter((r) => r.status === "Erro");
 
 console.log(`✅ ${sucessos.length} criados`);
 console.log(`❌ ${erros.length} com erro`);
@@ -57,27 +58,27 @@ const products = await sdk.product.create([
   {
     sequencia: 1,
     data: {
-      nome: 'Produto A',
-      codigo: 'PROD-A',
-      unidade: 'UN',
+      nome: "Produto A",
+      codigo: "PROD-A",
+      unidade: "UN",
       preco: 100,
-      origem: '0',
-      situacao: 'A',
-      tipo: 'P'
-    }
+      origem: "0",
+      situacao: "A",
+      tipo: "P",
+    },
   },
   {
     sequencia: 2,
     data: {
-      nome: 'Produto B',
-      codigo: 'PROD-B',
-      unidade: 'UN',
+      nome: "Produto B",
+      codigo: "PROD-B",
+      unidade: "UN",
       preco: 200,
-      origem: '0',
-      situacao: 'A',
-      tipo: 'P'
-    }
-  }
+      origem: "0",
+      situacao: "A",
+      tipo: "P",
+    },
+  },
 ]);
 ```
 
@@ -104,18 +105,18 @@ console.log('IDs criados:', ids);
 
 ```typescript
 if (erros.length > 0) {
-  console.error('\n❌ Erros encontrados:\n');
+  console.error("\n❌ Erros encontrados:\n");
 
-  erros.forEach(erro => {
+  erros.forEach((erro) => {
     console.error(`Sequência ${erro.sequencia}:`);
 
     if (erro.erros) {
-      erro.erros.forEach(e => {
+      erro.erros.forEach((e) => {
         console.error(`  - ${e.erro}`);
       });
     }
 
-    console.error('');
+    console.error("");
   });
 }
 ```
@@ -129,8 +130,8 @@ const resultMap = results.reduce((map, result) => {
 }, {} as Record<number, any>);
 
 // Verificar resultado específico
-if (resultMap[1].status === 'OK') {
-  console.log('Item 1 criado com ID:', resultMap[1].id);
+if (resultMap[1].status === "OK") {
+  console.log("Item 1 criado com ID:", resultMap[1].id);
 }
 ```
 
@@ -183,7 +184,7 @@ const results = await createInChunks(manyContacts, 10); // 10 por vez
 async function createWithRetry(items: any[], maxRetries: number = 2) {
   let toCreate = items.map((item, index) => ({
     sequencia: index + 1,
-    contato: item
+    contato: item,
   }));
 
   let attempt = 0;
@@ -195,8 +196,8 @@ async function createWithRetry(items: any[], maxRetries: number = 2) {
 
     const results = await sdk.contact.create(toCreate);
 
-    const sucessos = results.filter(r => r.status === 'OK');
-    const erros = results.filter(r => r.status === 'Erro');
+    const sucessos = results.filter((r) => r.status === "OK");
+    const erros = results.filter((r) => r.status === "Erro");
 
     allSuccesses.push(...sucessos);
 
@@ -208,16 +209,16 @@ async function createWithRetry(items: any[], maxRetries: number = 2) {
     console.log(`  ❌ ${erros.length} falharam`);
 
     // Tentar novamente apenas os que falharam
-    toCreate = erros.map(erro => {
+    toCreate = erros.map((erro) => {
       const originalIndex = erro.sequencia - 1;
       return {
         sequencia: originalIndex + 1,
-        contato: items[originalIndex]
+        contato: items[originalIndex],
       };
     });
 
     if (attempt < maxRetries && toCreate.length > 0) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     }
   }
 
@@ -229,15 +230,15 @@ async function createWithRetry(items: any[], maxRetries: number = 2) {
 ## Importação de CSV
 
 ```typescript
-import fs from 'fs';
-import { parse } from 'csv-parse/sync';
+import fs from "fs";
+import { parse } from "csv-parse/sync";
 
 async function importContactsFromCSV(filename: string) {
   // Ler CSV
-  const fileContent = fs.readFileSync(filename, 'utf-8');
+  const fileContent = fs.readFileSync(filename, "utf-8");
   const records = parse(fileContent, {
     columns: true,
-    skip_empty_lines: true
+    skip_empty_lines: true,
   });
 
   console.log(`📄 ${records.length} registros encontrados no CSV`);
@@ -248,58 +249,60 @@ async function importContactsFromCSV(filename: string) {
     tipo_pessoa: record.tipo_pessoa,
     cpf_cnpj: record.cpf_cnpj,
     email: record.email,
-    fone: record.telefone
+    fone: record.telefone,
   }));
 
   // Criar em chunks
   const results = await createInChunks(contacts, 10);
 
   // Relatório
-  const sucessos = results.filter(r => r.status === 'OK');
-  const erros = results.filter(r => r.status === 'Erro');
+  const sucessos = results.filter((r) => r.status === "OK");
+  const erros = results.filter((r) => r.status === "Erro");
 
-  console.log('\n📊 Relatório de Importação:');
+  console.log("\n📊 Relatório de Importação:");
   console.log(`  Total: ${records.length}`);
   console.log(`  ✅ Importados: ${sucessos.length}`);
   console.log(`  ❌ Erros: ${erros.length}`);
 
   // Salvar erros em arquivo
   if (erros.length > 0) {
-    const errorReport = erros.map(e => ({
+    const errorReport = erros.map((e) => ({
       sequencia: e.sequencia,
-      erros: e.erros?.map(err => err.erro).join('; ')
+      erros: e.erros?.map((err) => err.erro).join("; "),
     }));
 
     fs.writeFileSync(
-      'erros-importacao.json',
+      "erros-importacao.json",
       JSON.stringify(errorReport, null, 2)
     );
 
-    console.log('\n❌ Erros salvos em: erros-importacao.json');
+    console.log("\n❌ Erros salvos em: erros-importacao.json");
   }
 
   return { sucessos, erros };
 }
 
 // Uso
-await importContactsFromCSV('contatos.csv');
+await importContactsFromCSV("contatos.csv");
 ```
 
 ## Atualizar em Lote
 
 ```typescript
-async function updateMultipleContacts(updates: Array<{ id: number; changes: any }>) {
+async function updateMultipleContacts(
+  updates: Array<{ id: number; changes: any }>
+) {
   const batch = updates.map((update, index) => ({
     sequencia: index + 1,
     contato: {
       id: update.id,
-      ...update.changes
-    }
+      ...update.changes,
+    },
   }));
 
   const results = await sdk.contact.update(batch);
 
-  const sucessos = results.filter(r => r.status === 'OK');
+  const sucessos = results.filter((r) => r.status === "OK");
   console.log(`${sucessos.length} contatos atualizados`);
 
   return results;
@@ -307,9 +310,9 @@ async function updateMultipleContacts(updates: Array<{ id: number; changes: any 
 
 // Uso
 await updateMultipleContacts([
-  { id: 123, changes: { email: 'novo@email.com' } },
-  { id: 456, changes: { fone: '11999999999' } },
-  { id: 789, changes: { situacao: 'I' } }
+  { id: 123, changes: { email: "novo@email.com" } },
+  { id: 456, changes: { fone: "11999999999" } },
+  { id: 789, changes: { situacao: "I" } },
 ]);
 ```
 
@@ -324,11 +327,11 @@ function validateBatch(items: any[]): { valid: any[]; invalid: any[] } {
     const errors = [];
 
     if (!item.nome || item.nome.length < 3) {
-      errors.push('Nome inválido');
+      errors.push("Nome inválido");
     }
 
-    if (!['F', 'J'].includes(item.tipo_pessoa)) {
-      errors.push('Tipo de pessoa inválido');
+    if (!["F", "J"].includes(item.tipo_pessoa)) {
+      errors.push("Tipo de pessoa inválido");
     }
 
     if (errors.length > 0) {
@@ -347,7 +350,7 @@ const { valid, invalid } = validateBatch(contacts);
 if (invalid.length > 0) {
   console.error(`❌ ${invalid.length} itens inválidos:`);
   invalid.forEach(({ index, errors }) => {
-    console.error(`  Item ${index}: ${errors.join(', ')}`);
+    console.error(`  Item ${index}: ${errors.join(", ")}`);
   });
 }
 
@@ -369,7 +372,7 @@ async function createWithProgress(items: any[]) {
   for (const [index, chunkItems] of chunks.entries()) {
     const batch = chunkItems.map((item, i) => ({
       sequencia: i + 1,
-      contato: item
+      contato: item,
     }));
 
     const results = await sdk.contact.create(batch);
@@ -384,11 +387,11 @@ async function createWithProgress(items: any[]) {
 
 ## Melhores Práticas
 
-1. **Tamanho do Lote**: Use 10-50 itens por batch
+1. **Tamanho do Lote**: Use 5-10 itens por batch
 2. **Sequência**: Sempre use sequência única (1, 2, 3...)
 3. **Validação**: Valide antes de enviar
 4. **Chunking**: Divida grandes volumes
-5. **Delay**: Aguarde entre chunks (500ms-1s)
+5. **Delay**: Aguarde entre chunks.
 6. **Retry**: Implemente retry para falhas temporárias
 7. **Logging**: Registre sucessos e erros
 8. **Relatórios**: Gere relatórios de importação

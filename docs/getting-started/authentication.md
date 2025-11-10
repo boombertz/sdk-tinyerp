@@ -31,9 +31,9 @@ a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0
 A forma mais simples de usar o token é passá-lo diretamente no construtor:
 
 ```typescript
-import TinySDK from 'sdk-tinyerp';
+import TinySDK from "sdk-tinyerp";
 
-const sdk = new TinySDK('seu-token-aqui');
+const sdk = new TinySDK("seu-token-aqui");
 ```
 
 ::: danger Nunca faça isso em produção!
@@ -72,8 +72,8 @@ npm install dotenv
 Use no seu código:
 
 ```typescript
-import 'dotenv/config';
-import TinySDK from 'sdk-tinyerp';
+import "dotenv/config";
+import TinySDK from "sdk-tinyerp";
 
 const sdk = new TinySDK(process.env.TINY_API_TOKEN!);
 ```
@@ -120,12 +120,12 @@ netlify env:set TINY_API_TOKEN seu-token-aqui
 Use AWS Systems Manager Parameter Store ou Secrets Manager:
 
 ```typescript
-import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 
-const client = new SSMClient({ region: 'us-east-1' });
+const client = new SSMClient({ region: "us-east-1" });
 const command = new GetParameterCommand({
-  Name: '/myapp/tiny-api-token',
-  WithDecryption: true
+  Name: "/myapp/tiny-api-token",
+  WithDecryption: true,
 });
 
 const response = await client.send(command);
@@ -139,18 +139,18 @@ const sdk = new TinySDK(token!);
 Você pode validar se o token está funcionando fazendo uma requisição simples:
 
 ```typescript
-import TinySDK from 'sdk-tinyerp';
+import TinySDK from "sdk-tinyerp";
 
 async function validateToken() {
   try {
     const sdk = new TinySDK(process.env.TINY_API_TOKEN!);
     const accountInfo = await sdk.account.getInfo();
 
-    console.log('✅ Token válido!');
-    console.log('Empresa:', accountInfo.razao_social);
-    console.log('Email:', accountInfo.email);
+    console.log("✅ Token válido!");
+    console.log("Empresa:", accountInfo.razao_social);
+    console.log("Email:", accountInfo.email);
   } catch (error) {
-    console.error('❌ Token inválido ou erro na API');
+    console.error("❌ Token inválido ou erro na API");
     console.error(error);
   }
 }
@@ -160,45 +160,7 @@ validateToken();
 
 Se o token for válido, você receberá as informações da sua conta. Caso contrário, receberá um erro.
 
-## Melhores Práticas de Segurança
-
-### 1. Rotação de Tokens
-
-Embora o TinyERP não force a rotação de tokens, é uma boa prática renovar periodicamente:
-
-- Acesse o painel TinyERP
-- Gere um novo token
-- Atualize suas variáveis de ambiente
-- Revogue o token antigo (se possível)
-
-### 2. Diferentes Tokens por Ambiente
-
-Use tokens diferentes para desenvolvimento, staging e produção:
-
-```bash
-# .env.development
-TINY_API_TOKEN=token-desenvolvimento
-
-# .env.staging
-TINY_API_TOKEN=token-staging
-
-# .env.production
-TINY_API_TOKEN=token-producao
-```
-
-### 3. Princípio do Menor Privilégio
-
-Se o TinyERP oferecer tokens com permissões limitadas no futuro, use apenas as permissões necessárias para sua aplicação.
-
-### 4. Monitoramento
-
-Monitore o uso do seu token:
-
-- Logs de requisições
-- Alertas para erros de autenticação
-- Alertas para uso anômalo (muitas requisições, horários incomuns)
-
-### 5. Nunca Exponha o Token no Frontend
+### 3. Nunca Exponha o Token no Frontend
 
 ::: danger Segurança Crítica
 **NUNCA** envie o token para o navegador ou cliente. Sempre faça as requisições do lado do servidor (backend).
@@ -208,7 +170,7 @@ Exemplo **ERRADO** ❌:
 
 ```javascript
 // ❌ NÃO FAÇA ISSO - Frontend (React, Vue, etc.)
-const sdk = new TinySDK('token-aqui'); // Token exposto!
+const sdk = new TinySDK("token-aqui"); // Token exposto!
 ```
 
 Exemplo **CORRETO** ✅:
@@ -224,7 +186,7 @@ export default async function handler(req, res) {
 
 // ✅ Frontend (React)
 // Faz requisição para SUA API, não diretamente para TinyERP
-const response = await fetch('/api/produtos?term=notebook');
+const response = await fetch("/api/produtos?term=notebook");
 const products = await response.json();
 ```
 
@@ -233,34 +195,20 @@ const products = await response.json();
 O SDK lançará um `TinyApiError` se o token for inválido:
 
 ```typescript
-import TinySDK, { TinyApiError } from 'sdk-tinyerp';
+import TinySDK, { TinyApiError } from "sdk-tinyerp";
 
 try {
   const sdk = new TinySDK(process.env.TINY_API_TOKEN!);
   const info = await sdk.account.getInfo();
 } catch (error) {
   if (error instanceof TinyApiError) {
-    if (error.codigo === '401' || error.message.includes('autenticação')) {
-      console.error('Token inválido ou expirado');
+    if (error.codigo === "401" || error.message.includes("autenticação")) {
+      console.error("Token inválido ou expirado");
       // Notifique admin, tente renovar token, etc.
     }
   }
   throw error;
 }
-```
-
-## Proxy e Configuração Avançada
-
-Se sua infraestrutura requer proxy ou configurações especiais de rede, você pode precisar configurar variáveis de ambiente adicionais:
-
-```bash
-# Proxy HTTP/HTTPS
-HTTP_PROXY=http://proxy.empresa.com:8080
-HTTPS_PROXY=http://proxy.empresa.com:8080
-NO_PROXY=localhost,127.0.0.1
-
-# Certificados SSL customizados (se necessário)
-NODE_EXTRA_CA_CERTS=/path/to/custom-ca.pem
 ```
 
 ## Próximos Passos

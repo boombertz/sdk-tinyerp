@@ -2,9 +2,8 @@
 layout: home
 
 hero:
-  name: SDK TinyERP
-  text: SDK não oficial para API v2
-  tagline: TypeScript nativo, zero dependências, totalmente tipado
+  name: SDK TinyERP (Olist)
+  tagline: SDK não oficial para API V2
   image:
     src: /logo.svg
     alt: SDK TinyERP
@@ -38,7 +37,7 @@ features:
 
   - icon: 🛡️
     title: Tratamento de Erros
-    details: Classe de erro customizada (TinyApiError) que preserva todos os detalhes retornados pela API.
+    details: Classe de erro customizada que preserva todos os detalhes retornados pela API.
 
   - icon: 📚
     title: Bem Documentado
@@ -78,22 +77,22 @@ pnpm add sdk-tinyerp
 ## Exemplo de Uso
 
 ```typescript
-import TinySDK from 'sdk-tinyerp';
+import TinySDK from "sdk-tinyerp";
 
-const sdk = new TinySDK('seu-token-aqui');
+const sdk = new TinySDK("seu-token-aqui");
 
 // Obter informações da conta
 const accountInfo = await sdk.account.getInfo();
-console.log('Empresa:', accountInfo.razao_social);
+console.log("Empresa:", accountInfo.razao_social);
 
 // Pesquisar produtos
-const products = await sdk.product.search('notebook', {
-  situacao: 'A',  // Apenas ativos
-  pagina: 1
+const products = await sdk.product.search("notebook", {
+  situacao: "A", // Apenas ativos
+  pagina: 1,
 });
 
 console.log(`Encontrados ${products.produtos.length} produtos`);
-products.produtos.forEach(p => {
+products.produtos.forEach((p) => {
   console.log(`${p.nome} - R$ ${p.preco}`);
 });
 
@@ -102,16 +101,16 @@ const result = await sdk.contact.create([
   {
     sequencia: 1,
     contato: {
-      nome: 'João Silva',
-      tipo_pessoa: 'F',
-      cpf_cnpj: '12345678901',
-      email: 'joao@example.com'
-    }
-  }
+      nome: "João Silva",
+      tipo_pessoa: "F",
+      cpf_cnpj: "12345678901",
+      email: "joao@example.com",
+    },
+  },
 ]);
 
-if (result[0].status === 'OK') {
-  console.log('Contato criado com ID:', result[0].id);
+if (result[0].status === "OK") {
+  console.log("Contato criado com ID:", result[0].id);
 }
 ```
 
@@ -142,14 +141,14 @@ O SDK TinyERP foi desenvolvido pensando na experiência do desenvolvedor:
 
 ## Recursos Disponíveis
 
-| Resource | Métodos | Status |
-|----------|---------|--------|
-| **Account** | `getInfo()` | ✅ |
-| **Contacts** | `search()`, `getById()`, `create()`, `update()` | ✅ |
-| **Products** | `search()`, `getById()`, `create()` | ✅ |
-| Orders | - | 🚧 Planejado |
-| Invoices | - | 🚧 Planejado |
-| Stock | - | 🚧 Planejado |
+| Resource     | Métodos                                         | Status       |
+| ------------ | ----------------------------------------------- | ------------ |
+| **Account**  | `getInfo()`                                     | ✅           |
+| **Contacts** | `search()`, `getById()`, `create()`, `update()` | ✅           |
+| **Products** | `search()`, `getById()`, `create()`             | ✅           |
+| Orders       | -                                               | 🚧 Planejado |
+| Invoices     | -                                               | 🚧 Planejado |
+| Stock        | -                                               | 🚧 Planejado |
 
 ## Próximos Passos
 
